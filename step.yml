@@ -1,0 +1,42 @@
+title: Authenticate host with netrc
+summary: Adds your authentication config to the .netrc file
+description: |-
+  Adds your authentication config to the .netrc file.
+  
+  If you already has a .netrc file, the step will create a backup of the original, and appends the configs to the current one.
+website: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc
+source_code_url: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc
+support_url: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc/issues
+type_tags:
+  - utility
+is_requires_admin_user: true
+is_always_run: false
+is_skippable: false
+deps:
+  brew:
+  - name: go
+  apt_get:
+  - name: golang
+    bin_name: go
+toolkit:
+  go:
+    package_name: github.com/bitrise-steplib/steps-authenticate-host-with-netrc
+inputs:
+  - host:
+    opts:
+      title: "Host"
+      summary: ""
+      description: |-
+        The host where username and password will be used.
+        For example: github.com
+        is_required: true
+  - username:
+    opts:
+      title: Username
+      summary: The username used for the host to authenticate.
+      is_required: true
+  - password:
+    opts:
+      title: Password
+      description: The password used for the host to authenticate.
+      is_required: true

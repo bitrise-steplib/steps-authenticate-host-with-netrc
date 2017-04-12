@@ -1,0 +1,3 @@
+machine myhost.com
+login myname
+password mypass
