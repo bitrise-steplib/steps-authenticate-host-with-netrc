@@ -36,23 +36,17 @@ func (netRCModel *NetRCModel) AddItemModel(itemModels ...NetRCItemModel) {
 
 // CreateFile ...
 func (netRCModel *NetRCModel) CreateFile() error {
-	EOF := func(i, len int) string {
-		if i != len-1 {
-			return "\n\n"
-		}
-		return ""
-	}
-
-	netRCFileContent := ""
-	for i, itemModel := range netRCModel.ItemModels {
-		netRCFileContent += fmt.Sprintf("machine %s\nlogin %s\npassword %s%s", itemModel.Machine, itemModel.Login, itemModel.Password, EOF(i, len(netRCModel.ItemModels)))
-	}
-
+	netRCFileContent := generateFileContent(netRCModel)
 	return fileutil.WriteStringToFile(netRCModel.OutputPth, netRCFileContent)
 }
 
 // Append ...
 func (netRCModel *NetRCModel) Append() error {
+	netRCFileContent := generateFileContent(netRCModel)
+	return fileutil.AppendStringToFile(netRCModel.OutputPth, fmt.Sprintf("\n\n%s", netRCFileContent))
+}
+
+func generateFileContent(netRCModel *NetRCModel) string {
 	EOF := func(i, len int) string {
 		if i != len-1 {
 			return "\n\n"
@@ -64,6 +58,5 @@ func (netRCModel *NetRCModel) Append() error {
 	for i, itemModel := range netRCModel.ItemModels {
 		netRCFileContent += fmt.Sprintf("machine %s\nlogin %s\npassword %s%s", itemModel.Machine, itemModel.Login, itemModel.Password, EOF(i, len(netRCModel.ItemModels)))
 	}
-
-	return fileutil.AppendStringToFile(netRCModel.OutputPth, fmt.Sprintf("\n\n%s", netRCFileContent))
+	return netRCFileContent
 }

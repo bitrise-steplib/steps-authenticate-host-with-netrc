@@ -21,7 +21,6 @@ type ConfigsModel struct {
 	Password string
 }
 
-//Authenticate host with netrc
 func createConfigsModelFromEnvs() ConfigsModel {
 	return ConfigsModel{
 		Host:     os.Getenv("host"),
@@ -48,7 +47,6 @@ func secureInput(input string) string {
 }
 
 func (configs *ConfigsModel) print() {
-	// star out sensitive fields
 	log.Infof("Configs:")
 	log.Printf("- Host: %s", configs.Host)
 	log.Printf("- Username: %s", configs.Username)
