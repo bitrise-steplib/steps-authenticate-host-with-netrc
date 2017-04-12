@@ -23,7 +23,6 @@ login testusername2
 password testpassword2`
 
 func TestCreateFile(t *testing.T) {
-
 	netRC := New()
 
 	tmpDir, err := pathutil.NormalizedOSTempDirPath("__netrc_test__")
