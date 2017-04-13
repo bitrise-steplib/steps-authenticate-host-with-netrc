@@ -29,7 +29,7 @@ func TestCreateFile(t *testing.T) {
 	tmpDir, err := pathutil.NormalizedOSTempDirPath("__netrc_test__")
 	require.NoError(t, err)
 	defer func() {
-		os.RemoveAll(tmpDir)
+		require.NoError(t, os.RemoveAll(tmpDir))
 	}()
 
 	t.Log("Test CreateFile")
