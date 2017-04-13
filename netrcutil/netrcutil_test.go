@@ -5,6 +5,8 @@ import (
 
 	"os"
 
+	"path/filepath"
+
 	"github.com/bitrise-io/go-utils/fileutil"
 	"github.com/bitrise-io/go-utils/pathutil"
 	"github.com/stretchr/testify/require"
@@ -23,17 +25,18 @@ login testusername2
 password testpassword2`
 
 func TestCreateFile(t *testing.T) {
-	netRC := New()
 
 	tmpDir, err := pathutil.NormalizedOSTempDirPath("__netrc_test__")
 	require.NoError(t, err)
+	defer func() {
+		os.RemoveAll(tmpDir)
+	}()
 
-	netRC.OutputPth = tmpDir
-	require.NoError(t, os.RemoveAll(netRC.OutputPth))
-
-	writtenContent := ""
 	t.Log("Test CreateFile")
 	{
+		netRC := New()
+		netRC.OutputPth = filepath.Join(tmpDir, ".netrc")
+
 		netRC.AddItemModel(NetRCItemModel{Machine: "testhost.com", Login: "testusername", Password: "testpassword"})
 
 		isExists, err := pathutil.IsPathExists(netRC.OutputPth)
@@ -47,18 +50,25 @@ func TestCreateFile(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, true, isExists)
 
-		writtenContent, err = fileutil.ReadStringFromFile(netRC.OutputPth)
+		writtenContent, err := fileutil.ReadStringFromFile(netRC.OutputPth)
 		require.NoError(t, err)
 		require.Equal(t, testCreateFileContent, writtenContent)
 	}
 
 	t.Log("Test Append")
 	{
-		netRC.ItemModels = []NetRCItemModel{NetRCItemModel{Machine: "testhost2.com", Login: "testusername2", Password: "testpassword2"}}
+		netRC := New()
+		netRC.OutputPth = filepath.Join(tmpDir, ".netrc")
+
+		isExists, err := pathutil.IsPathExists(netRC.OutputPth)
+		require.NoError(t, err)
+		require.Equal(t, true, isExists)
+
+		netRC.AddItemModel(NetRCItemModel{Machine: "testhost2.com", Login: "testusername2", Password: "testpassword2"})
 		err = netRC.Append()
 		require.NoError(t, err)
 
-		writtenContent, err = fileutil.ReadStringFromFile(netRC.OutputPth)
+		writtenContent, err := fileutil.ReadStringFromFile(netRC.OutputPth)
 		require.NoError(t, err)
 		require.Equal(t, testAppendFileContent, writtenContent)
 	}
