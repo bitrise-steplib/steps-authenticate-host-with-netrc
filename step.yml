@@ -29,7 +29,7 @@ inputs:
       description: |-
         The host where username and password will be used.
         For example: github.com
-        is_required: true
+      is_required: true
   - username:
     opts:
       title: Username

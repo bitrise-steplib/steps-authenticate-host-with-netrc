@@ -47,16 +47,12 @@ func (netRCModel *NetRCModel) Append() error {
 }
 
 func generateFileContent(netRCModel *NetRCModel) string {
-	EOF := func(i, len int) string {
-		if i != len-1 {
-			return "\n\n"
-		}
-		return ""
-	}
-
 	netRCFileContent := ""
 	for i, itemModel := range netRCModel.ItemModels {
-		netRCFileContent += fmt.Sprintf("machine %s\nlogin %s\npassword %s%s", itemModel.Machine, itemModel.Login, itemModel.Password, EOF(i, len(netRCModel.ItemModels)))
+		netRCFileContent += fmt.Sprintf("machine %s\nlogin %s\npassword %s", itemModel.Machine, itemModel.Login, itemModel.Password)
+		if i != len(netRCModel.ItemModels)-1 {
+			netRCFileContent += "\n\n"
+		}
 	}
 	return netRCFileContent
 }

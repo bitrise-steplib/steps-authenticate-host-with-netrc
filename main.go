@@ -61,13 +61,12 @@ func failf(message string, args ...interface{}) {
 func main() {
 	configs := createConfigsModelFromEnvs()
 
+	configs.print()
+	fmt.Println()
+
 	if err := configs.validate(); err != nil {
 		failf("Issue with input: %s", err)
 	}
-
-	configs.print()
-
-	fmt.Println()
 
 	netRC := netrcutil.New()
 
