@@ -8,7 +8,7 @@ website: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc
 source_code_url: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc
 support_url: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc/issues
 type_tags:
-  - utility
+  - access-control
 is_requires_admin_user: true
 is_always_run: false
 is_skippable: false
