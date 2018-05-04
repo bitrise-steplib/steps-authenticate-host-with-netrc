@@ -1,6 +1,10 @@
-## Changelog (Current version: 0.9.2)
+## Changelog (Current version: 0.9.3)
 
 -----------------
+
+### 0.9.3 (2018 May 04)
+* [630c83b] Prepare for 0.9.3
+* [71c1702] proper indentation (#2)
 
 ### 0.9.2 (2018 Feb 13)
 * [a33d6bd] Prepare for 0.9.2
@@ -12,4 +16,4 @@
 
 -----------------
 
-Updated: 2018 Feb 13
+Updated: 2018 May 04
