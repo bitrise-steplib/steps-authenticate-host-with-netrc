@@ -35,8 +35,10 @@ inputs:
       title: Username
       summary: The username used for the host to authenticate.
       is_required: true
+      is_sensitive: true
   - password:
     opts:
       title: Password/Auth Token/Access Token
       description: The password (or Auth Token/Access Token) used for the host to authenticate.
       is_required: true
+      is_sensitive: true
