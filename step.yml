@@ -16,7 +16,7 @@ description: |-
   - [Learn more what the .netrc file format comprises of](https://everything.curl.dev/usingcurl/netrc#the-netrc-file-format)
 
   ### Related Steps
-  - [Authenticate SSH key (RSA private key)](https://www.bitrise.io/integrations/steps/activate-ssh-key)
+  - [Activate SSH key (RSA private key)](https://www.bitrise.io/integrations/steps/activate-ssh-key)
   - [Connect to OpenVPN Server](https://www.bitrise.io/integrations/steps/flutter-installer)
 
 website: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc
