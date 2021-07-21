@@ -1,9 +1,24 @@
-title: Authenticate host with netrc
-summary: Adds your authentication config to the .netrc file
+title: "Authenticate host with netrc"
+summary: |-
+  Adds your authentication configuration to the `.netrc` file.
+
 description: |-
-  Adds your authentication config to the .netrc file.
-  
-  If you already have a .netrc file, the step will create a backup of the original, and appends the configs to the current one.
+  [This Step](https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc) adds the authentication configuration (host name, login name and password string) to the `.netrc` file .
+  The Step lets you store your remote credentials on the build VM once so that later steps can use the credentials for authentication instead of requiring manual input. Examples include HTTPS git clone URLs with OAuth token-based authentication (instead of authenticating with SSH key).
+  Please note that if you already have a `.netrc` file, the Step will create a backup of the original, and appends the configs to the current one.
+
+  ### Configuring the Step
+  1.Add the **Host** name, where the username and password will be used, for example, github.com.
+  2.Add the **Username**.
+  3.Add the password or the authentication token/ access token in the respective field which will be used by the host to authenticate you.
+
+  ### Useful links
+  - [Learn more what the .netrc file format comprises of](https://everything.curl.dev/usingcurl/netrc#the-netrc-file-format)
+
+  ### Related Steps
+  - [Activate SSH key (RSA private key)](https://www.bitrise.io/integrations/steps/activate-ssh-key)
+  - [Connect to OpenVPN Server](https://www.bitrise.io/integrations/steps/flutter-installer)
+
 website: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc
 source_code_url: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc
 support_url: https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc/issues
