@@ -4,7 +4,7 @@ summary: |-
 
 description: |-
   [This Step](https://github.com/bitrise-steplib/steps-authenticate-host-with-netrc) adds the authentication configuration (host name, login name and password string) to the `.netrc` file .
-  The Step, for example, makes it easy to use HTTPS git clone URLs with, let's say, OAuth token based authentication, instead of authenticating with SSH key.
+  The Step lets you store your remote credentials on the build VM once so that later steps can use the credentials for authentication instead of requiring manual input. Examples include HTTPS git clone URLs with OAuth token-based authentication (instead of authenticating with SSH key).
   Please note that if you already have a `.netrc` file, the Step will create a backup of the original, and appends the configs to the current one.
 
   ### Configuring the Step
