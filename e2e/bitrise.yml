@@ -26,7 +26,7 @@ workflows:
         - username: $USERNAME
         - password: $PASSWORD
     - path::./:
-        title: Step Test
+        title: Execute step second time
         inputs:
         - host: $HOST
         - username: $USERNAME
@@ -39,6 +39,16 @@ workflows:
 
             cat ~/.netrc
             echo ""
+    - script:
+        title: Check file permission
+        inputs:
+        - content: |-
+            set -ex
+
+            if [ $(stat -f "%A" ~/.netrc) != 600 ]; then
+              echo "netrc file permission is not 600"
+              exit 1
+            fi
     - script:
         title: Restore .netrc
         inputs:
