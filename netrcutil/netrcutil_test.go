@@ -25,7 +25,6 @@ const testAppendFileContent = `machine testhost.com
 machine testhost2.com
 	login testusername2
 	password testpassword2
-
 `
 
 func TestCreateFile(t *testing.T) {

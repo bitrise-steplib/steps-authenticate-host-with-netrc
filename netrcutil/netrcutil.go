@@ -45,7 +45,7 @@ func (netRCModel *NetRCModel) CreateFile() error {
 // Append ...
 func (netRCModel *NetRCModel) Append() error {
 	netRCFileContent := generateFileContent(netRCModel)
-	return fileutil.AppendStringToFile(netRCModel.OutputPth, fmt.Sprintf("\n\n%s\n", netRCFileContent))
+	return fileutil.AppendStringToFile(netRCModel.OutputPth, fmt.Sprintf("\n\n%s", netRCFileContent))
 }
 
 func generateFileContent(netRCModel *NetRCModel) string {
