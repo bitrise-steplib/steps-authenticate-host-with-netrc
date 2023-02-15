@@ -45,13 +45,13 @@ func (netRCModel *NetRCModel) CreateFile() error {
 // Append ...
 func (netRCModel *NetRCModel) Append() error {
 	netRCFileContent := generateFileContent(netRCModel)
-	return fileutil.AppendStringToFile(netRCModel.OutputPth, fmt.Sprintf("\n\n%s", netRCFileContent))
+	return fileutil.AppendStringToFile(netRCModel.OutputPth, fmt.Sprintf("\n\n%s\n", netRCFileContent))
 }
 
 func generateFileContent(netRCModel *NetRCModel) string {
 	netRCFileContent := ""
 	for i, itemModel := range netRCModel.ItemModels {
-		netRCFileContent += fmt.Sprintf("machine %s\n\tlogin %s\n\tpassword %s", itemModel.Machine, itemModel.Login, itemModel.Password)
+		netRCFileContent += fmt.Sprintf("machine %s\n\tlogin %s\n\tpassword %s\n", itemModel.Machine, itemModel.Login, itemModel.Password)
 		if i != len(netRCModel.ItemModels)-1 {
 			netRCFileContent += "\n\n"
 		}
