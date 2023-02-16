@@ -14,15 +14,18 @@ import (
 
 const testCreateFileContent = `machine testhost.com
 	login testusername
-	password testpassword`
+	password testpassword
+`
 
 const testAppendFileContent = `machine testhost.com
 	login testusername
 	password testpassword
 
+
 machine testhost2.com
 	login testusername2
-	password testpassword2`
+	password testpassword2
+`
 
 func TestCreateFile(t *testing.T) {
 
