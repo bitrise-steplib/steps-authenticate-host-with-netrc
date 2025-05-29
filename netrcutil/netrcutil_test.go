@@ -140,6 +140,35 @@ func TestCreateOrUpdateFile(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, testCreateFileContent, backupContent)
 	})
+
+	t.Run("when backup already exists", func(t *testing.T) {
+		netRC, tmpDir, cleanup := setup(t)
+		defer cleanup()
+
+		// First run to create .netrc and backup
+		initial := New()
+		initial.OutputPth = netRC.OutputPth
+		err := initial.CreateOrUpdateFile(NetRCItemModel{Machine: "testhost.com", Login: "testusername", Password: "testpassword"})
+		require.NoError(t, err)
+
+		// Second run should not create another backup
+		err = netRC.CreateOrUpdateFile(NetRCItemModel{Machine: "testhost2.com", Login: "testusername2", Password: "testpassword2"})
+		require.NoError(t, err)
+
+		err = netRC.CreateOrUpdateFile(NetRCItemModel{Machine: "testhost3.com", Login: "testusername3", Password: "testpassword3"})
+		require.NoError(t, err)
+
+		// verify only one backup file exists
+		found := 0
+		err = filepath.Walk(tmpDir, func(path string, info os.FileInfo, err error) error {
+			if !info.IsDir() && path != netRC.OutputPth {
+				found += 1
+			}
+			return nil
+		})
+		require.NoError(t, err)
+		require.Equal(t, 1, found)
+	})
 }
 
 func setup(t *testing.T) (*NetRCModel, string, func()) {

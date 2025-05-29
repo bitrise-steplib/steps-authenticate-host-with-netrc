@@ -52,14 +52,24 @@ func (netRCModel *NetRCModel) CreateOrUpdateFile(itemModels ...NetRCItemModel) e
 	} else {
 		log.Warnf("File already exists at (%s)", netRCModel.OutputPth)
 
-		backupPth := fmt.Sprintf("%s%s", strings.Replace(netRCModel.OutputPth, ".netrc", ".bk.netrc", -1), time.Now().Format("2006_01_02_15_04_05"))
+		backupBase := strings.Replace(netRCModel.OutputPth, ".netrc", ".bk.netrc", -1)
+		backups, err := filepath.Glob(backupBase + "*")
+		if err != nil {
+			return fmt.Errorf("Failed to find backup files, error: %s", err)
+		}
 
-		if originalContent, err := fileutil.ReadBytesFromFile(netRCModel.OutputPth); err != nil {
-			return fmt.Errorf("Failed to read file (%s), error: %s", netRCModel.OutputPth, err)
-		} else if err := fileutil.WriteBytesToFile(backupPth, originalContent); err != nil {
-			return fmt.Errorf("Failed to write file (%s), error: %s", backupPth, err)
+		if len(backups) == 0 {
+			backupPth := fmt.Sprintf("%s%s", backupBase, time.Now().Format("2006_01_02_15_04_05"))
+
+			if originalContent, err := fileutil.ReadBytesFromFile(netRCModel.OutputPth); err != nil {
+				return fmt.Errorf("Failed to read file (%s), error: %s", netRCModel.OutputPth, err)
+			} else if err := fileutil.WriteBytesToFile(backupPth, originalContent); err != nil {
+				return fmt.Errorf("Failed to write file (%s), error: %s", backupPth, err)
+			} else {
+				log.Printf("Backup created at: %s", backupPth)
+			}
 		} else {
-			log.Printf("Backup created at: %s", backupPth)
+			log.Printf("Backup already exists at: %s", backups[0])
 		}
 
 		log.Printf("Appending config to the existing .netrc file...")
