@@ -52,29 +52,35 @@ func (netRCModel *NetRCModel) CreateOrUpdateFile(itemModels ...NetRCItemModel) e
 	} else {
 		log.Warnf("File already exists at (%s)", netRCModel.OutputPth)
 
-		backupBase := strings.Replace(netRCModel.OutputPth, ".netrc", ".bk.netrc", -1)
-		backups, err := filepath.Glob(backupBase + "*")
+		existingContent, err := fileutil.ReadStringFromFile(netRCModel.OutputPth)
 		if err != nil {
-			return fmt.Errorf("Failed to find backup files, error: %s", err)
+			return fmt.Errorf("Failed to read file (%s), error: %s", netRCModel.OutputPth, err)
 		}
 
-		if len(backups) == 0 {
-			backupPth := fmt.Sprintf("%s%s", backupBase, time.Now().Format("2006_01_02_15_04_05"))
-
-			if originalContent, err := fileutil.ReadBytesFromFile(netRCModel.OutputPth); err != nil {
-				return fmt.Errorf("Failed to read file (%s), error: %s", netRCModel.OutputPth, err)
-			} else if err := fileutil.WriteBytesToFile(backupPth, originalContent); err != nil {
-				return fmt.Errorf("Failed to write file (%s), error: %s", backupPth, err)
-			} else {
-				log.Printf("Backup created at: %s", backupPth)
+		missingItems := []NetRCItemModel{}
+		for _, item := range netRCModel.ItemModels {
+			entry := generateItemContent(item)
+			if !strings.Contains(existingContent, entry) {
+				missingItems = append(missingItems, item)
 			}
-		} else {
-			log.Printf("Backup already exists at: %s", backups[0])
 		}
+
+		if len(missingItems) == 0 {
+			log.Printf(".netrc already contains the provided configuration, skipping update")
+			return nil
+		}
+
+		backupPth := fmt.Sprintf("%s%s", strings.Replace(netRCModel.OutputPth, ".netrc", ".bk.netrc", -1), time.Now().Format("2006_01_02_15_04_05"))
+
+		if err := fileutil.WriteBytesToFile(backupPth, []byte(existingContent)); err != nil {
+			return fmt.Errorf("Failed to write file (%s), error: %s", backupPth, err)
+		}
+		log.Printf("Backup created at: %s", backupPth)
 
 		log.Printf("Appending config to the existing .netrc file...")
 
-		if err := netRCModel.Append(); err != nil {
+		appendModel := &NetRCModel{OutputPth: netRCModel.OutputPth, ItemModels: missingItems}
+		if err := appendModel.Append(); err != nil {
 			return fmt.Errorf("Failed to write .netrc file, error: %s", err)
 		}
 	}
@@ -109,4 +115,9 @@ func generateFileContent(netRCModel *NetRCModel) string {
 		}
 	}
 	return netRCFileContent
+}
+
+func generateItemContent(item NetRCItemModel) string {
+	m := &NetRCModel{ItemModels: []NetRCItemModel{item}}
+	return generateFileContent(m)
 }
